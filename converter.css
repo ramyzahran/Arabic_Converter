@@ -1,0 +1,58 @@
+body {
+	font-size:18px;
+	color:#C0C0C0;
+	background-color:#1C1C1C ;
+	font-style: normal;
+}
+input{
+	font-size:14px;
+	background-color:#555555;
+	color:white;
+	font-style: normal;
+}
+button{
+	font-size:15px;
+	background-color:#555555;
+	color:white;
+	font-style: normal;
+}
+
+textarea{
+	font-size:14px;
+	background-color:#555555;
+	color:white;
+	font-style: normal;
+}
+
+
+button#toArabicB:hover
+{
+	 background:#cc6600 ;
+    background-color:#009933 ;
+}
+button#toArabicB:active
+{
+    background:#cc6600 ;
+}
+button#toArabic:hover
+{
+    background-color:#009933 ;
+}
+button#toArabic:active
+{
+    background:#cc6600 ;
+}
+button#Unpack:hover
+{
+    background-color:#009933 ;
+}
+button#Unpack:active
+{
+    background:#cc6600 ;
+}
+input[type=button]:hover {
+    background-color:#009933;
+}
+input[type=button]:active {
+    background-color:#cc6600;
+}

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html dir="ltl">
+<link rel="stylesheet" type="text/css" href="converter.css">
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>تفكيك الحروف</title>
+</head>
+<body >
+
+
+
+<p>النص قبل التفكيك: -
+1- <textarea name="arabic" id="arabic" cols="85" rows="4" ></textarea>
+</p>
+<p>
+<button id="toArabicB" >تفكيك النص</button>
+<button id="Unpack" onclick="fliptext();">عكس النص</button>
+<input type="button" value="نسخ" onclick="copy_to_clipboard('arabic');">
+<input type="button" value="قص" onclick="cut_to_clipboard('arabic');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('arabic');">
+<input type="button" value="حذف" onclick="delete_textarea('arabic');">
+</p>
+<p>
+</p>النص بعد التفكيك: -
+2- <textarea name="arabicB" id="arabicB" cols="85" rows="3" ></textarea>
+<p>
+<input type="button" value="نسخ" onclick="copy_to_clipboard('arabicB');">
+<input type="button" value="قص" onclick="cut_to_clipboard('arabicB');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('arabicB');">
+<input type="button" value="حذف" onclick="delete_textarea('arabicB');">
+<button id="toArabic">إرجاع ما بخانة النتيجة للنص</button>
+<input onclick="fliptextb();" value="عكس النتيجة" type="button">
+</p>
+
+<p>[خيارات تلقائية]<br>
+1&2&3&4   >>>>>>>>         [   <input type="checkbox" id="AutoConvert" checked="" onclick="AutoMethod()">   التحويل و النسخ التلقائي]<br>
+5&6   >>>>>>>>             [   <input type="checkbox" id="AutoSplit" checked="" onclick="AutoMethod()">   التقسيم التلقائي]<br>
+7&8&9   >>>>>>>>            [   <input type="checkbox" id="AutoReplace"  onclick="AutoMethod()">   الإستبدال التلقائي]
+</p>
+
+
+
+
+
+
+
+<script type="text/javascript" src="converter.js"></script>
+<script type="text/javascript">
+	var arabicText = document.getElementById('arabic');
+	var arabicNote = document.getElementById('arabicNote');
+	var arabicBText = document.getElementById('arabicB');
+	var arabicBNote = document.getElementById('arabicBNote');
+
+	document.getElementById('toArabicB').addEventListener('click', function(){
+		arabicBText.value =  arabicConverter.convertArabic(arabicText.value);
+		AutoMethod();
+		updateNotes();
+		 
+
+	});
+
+	document.getElementById('toArabic').addEventListener('click', function(){
+		arabicText.value = arabicConverter.convertArabicBack(arabicBText.value);
+		updateNotes();
+		
+	});
+
+	function updateNotes(){
+		var buffer = '';
+		for (var i in arabicText.value){
+			buffer += arabicText.value.charCodeAt(i) + ' ';
+		}
+		arabicNote.innerText = buffer;
+		
+		
+		var bufferB = '';
+		for (var j in arabicBText.value){
+			bufferB += arabicBText.value.charCodeAt(j) + ' ';
+		}
+		arabicBNote.innerText = bufferB;
+	}
+</script>
+
+
+<script>
+function AutoMethod()
+{
+if (AutoConvert.checked)
+{
+if (AutoSplit.checked){
+InputD.value=document.getElementById('arabicB').value;
+SplitText();
+Input.value=document.getElementById('OutInputD').value;
+reverseIt ();
+
+if (AutoReplace.checked==true)
+{
+InputR.value=document.getElementById('Output').value;
+RepalceChars();
+copy_to_clipboard('OutInputR');
+
+}else{
+copy_to_clipboard('Output');
+}
+
+
+
+
+
+}else{
+Input.value=document.getElementById('arabicB').value;
+reverseIt ();
+
+if (AutoReplace.checked==true)
+{
+InputR.value=document.getElementById('Output').value;
+RepalceChars();
+copy_to_clipboard('OutInputR');
+
+}else{
+copy_to_clipboard('Output');
+}
+
+}
+}
+
+if ((AutoConvert.checked==false)&&(AutoSplit.checked==true))
+{
+InputD.value=document.getElementById('arabicB').value;
+SplitText();
+}
+
+if ((AutoConvert.checked==false)&&(AutoSplit.checked==false)&&(AutoReplace.checked==true))
+{
+InputR.value=document.getElementById('arabicB').value;
+RepalceChars();
+copy_to_clipboard('OutInputR');
+
+}
+
+
+
+
+}
+</script>
+
+
+
+<script>
+	function fliptext(){
+var text = document.getElementById('arabic').value;
+text = text.replace(/\r/gi,'');
+text = text.replace(/([^a-z 0-9\n])/gi,' $1 ');
+text = text.split('\n').reverse().join('\n');
+text = text.split('').reverse().join('');
+text = text.replace(/ ([^a-z 0-9\n]) /gi,'$1');
+document.getElementById('arabic').value = text;
+count_me();}
+
+	function fliptextb(){
+var text = document.getElementById('arabicB').value;
+text = text.replace(/\r/gi,'');
+text = text.replace(/([^a-z 0-9\n])/gi,' $1 ');
+text = text.split('\n').reverse().join('\n');
+text = text.split('').reverse().join('');
+text = text.replace(/ ([^a-z 0-9]) /gi,'$1');
+document.getElementById('arabicB').value = text;
+count_me();}
+</script>
+<script>
+function copy_to_clipboard(id)
+{
+    document.getElementById(id).select();
+    document.execCommand('copy');
+}
+</script>
+<script>
+function cut_to_clipboard(id)
+{
+    document.getElementById(id).select();
+    document.execCommand('cut');
+}
+</script>
+<script>
+function delete_textarea(id)
+{
+    document.getElementById(id).select();
+    document.execCommand('delete');
+}
+</script>
+
+<script>
+
+function select_to_clipboard(id)
+{
+    document.getElementById(id).select();
+}
+
+</script>
+
+
+
+<hr>
+
+
+<p>النص قبل التقسيم: -
+5 ---> <textarea name="InputD" id="InputD" cols="85" rows="2" ></textarea>
+<p>
+<input type="button" name="Go" value="تقسيم النص" onclick="SplitText()">
+<input type="button" value="نسخ" onclick="copy_to_clipboard('InputD');">
+<input type="button" value="قص" onclick="cut_to_clipboard('InputD');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('InputD');">
+<input type="button" value="حذف" onclick="delete_textarea('InputD');">
+<p> 
+
+<input type="text" id="breaklinecode"  value="$newline"> $newline الكود الفاصل للسطور لتقسيم سطر جديد <br>
+<input type="text" id="SplitNum"  value="80"> عدد حروف السطر المقسم [حد التقسيم]</input>
+
+
+
+</p>
+<p>النص بعد التقسيم: -
+6 ---> <textarea name="OutInputD" id="OutInputD" rows="4" cols="85"></textarea><br>
+<input type="button" value="نسخ" onclick="copy_to_clipboard('OutInputD');">
+<input type="button" value="قص" onclick="cut_to_clipboard('OutInputD');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('OutInputD');">
+<input type="button" value="حذف" onclick="delete_textarea('OutInputD');">
+
+</p>
+<script language="javascript">
+function SplitText(){
+SplitStringInput="";
+breaklinecodeInput="";
+SplitNumInput="";
+ var SplitStringInput = InputD.value;
+ var breaklinecodeInput =breaklinecode.value;
+ 
+ var SplitNumInput = SplitNum.value;
+
+if (breaklinecodeInput=="$newline")
+{
+breaklinecodeInput="\r\n";
+}
+
+
+	  SplitString=SplitStringInput.split(/\r?\n/);
+  for (f=0 ; f<SplitString.length ; f++) {
+finaltext="";
+        text=SplitString[f];
+        var idealSplit = SplitNumInput,
+            lineCounter = 0,
+            lineIndex = 0,
+			theString="",
+            lines = [""],
+            ch, i;
+
+        for (i = 0; i < text.length; i++) {
+            ch = text[i];
+			//||(lineCounter >=maxSplit )
+            if ((lineCounter >= idealSplit && ch === " ") ) {
+                ch = "";
+                lineCounter = -1;
+                lineIndex++;
+                lines.push("");
+            }
+            lines[lineIndex] += ch;
+            lineCounter++;
+        }
+setbreakline=false;
+for (e=0 ; e<lines.length ; e++) {
+if(setbreakline==false){
+finaltext=lines[e]+finaltext
+setbreakline=true;
+}else{
+if (breaklinecodeInput=="\r\n"){
+finaltext=finaltext+breaklinecodeInput+lines[e];
+}else{
+finaltext=lines[e]+breaklinecodeInput+finaltext;
+}
+}
+//alert(finaltext)
+
+}
+SplitString[f]=finaltext;
+  }
+  var theString=SplitString.join("\r\n");
+ OutInputD.value=theString;
+ 
+ }
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+<hr>
+<p>7 -  ( wreplace خريطة) قيم حروف الإستبدال : -    
+   <textarea name="wReplaceFile" id="wReplaceFile" rows="2" cols="20"></textarea><br>
+ <input type="button" value="حذف" onclick="delete_textarea('wReplaceFile');">
+<p>النص قبل الإستبدال: -    
+8-   <textarea name="InputR" id="InputR" rows="3" cols="85"></textarea><br>
+	 <input type="button" value="إستبدال" onclick="RepalceChars();">
+	 <input type="button" value="نسخ" onclick="copy_to_clipboard('InputR');">
+<input type="button" value="قص" onclick="cut_to_clipboard('InputR');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('InputR');">
+<input type="button" value="حذف" onclick="delete_textarea('InputR');">
+<br>
+<p>النص بعد الإستبدال: -    
+9-   <textarea name="OutInputR" id="OutInputR" rows="5" cols="85"></textarea><br>
+<input type="button" value="نسخ" onclick="copy_to_clipboard('OutInputR');">
+<input type="button" value="قص" onclick="cut_to_clipboard('OutInputR');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('OutInputR');">
+<input type="button" value="حذف" onclick="delete_textarea('OutInputR');">
+  
+
+  
+  
+  
+  
+  
+  
+  
+  <script type="text/javascript">
+  /*
+    document.getElementById('file').onchange = () => {
+      const file = document.getElementById('file').files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+        reader.onload = (evt) => {
+          console.log(evt.target.result);
+		  */
+		  function RepalceChars(){
+		  
+		  if (wReplaceFile.value!=""){
+		   ReadFile=wReplaceFile.value.split(/\r?\n/);
+		  StartData=false;
+		  GetText=InputR.value;
+		  
+		  for (f=0 ; f<ReadFile.length ; f++) {
+		  
+		  if (StartData==true)
+		  {
+		  Values=ReadFile[f].split(/\t/);
+
+		  ShearchForChar=Values[0];
+		  ReplaceChar=Values.length>1?Values[1]:"";
+		  CaseSensitive=Values.length>2?Values[2]:"";
+		  
+		
+		  
+		  if (CaseSensitive=="C")
+		  {
+		  GetText=GetText.replace(new RegExp(ShearchForChar,'gi'),ReplaceChar);
+		  }else{
+		  
+		GetText=GetText.replace(new RegExp(ShearchForChar,'gi'),ReplaceChar);
+		  
+		  }
+		  
+		 // alert(ReplaceChar)
+		  
+		  }
+
+		  if (ReadFile[f]=="##")
+		  {
+		  StartData=true;
+		  }
+		  
+		  }
+		   OutInputR.value=GetText;
+		  
+		  
+		  
+		  
+		  }else{
+		  alert("أدخل قيم حروف الإستبدال");
+		  }
+		  
+		  };
+		  
+		  /*
+          // Do stuff with the text data here...
+        };
+        reader.onerror = (evt) => {
+          console.error('Failed to read this file');
+        };
+
+	  }
+	  
+    };*/
+  </script>
+  
+  
+
+
+
+
+
+
+
+
+<hr>
+
+
+
+<form name="form1">
+<p>النص قبل التحويل وعكس الحروف: -
+3- <textarea name="Input" id="Input" rows="3" cols="85" onchange="reverseIt()"></textarea> 
+</p>
+<input type="button" name="Go" value="عكس النتيجة" onclick="reverseIt()">
+<input type="button" value="نسخ" onclick="copy_to_clipboard('Input');">
+<input type="button" value="قص" onclick="cut_to_clipboard('Input');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('Input');">
+<input type="button" value="حذف" onclick="delete_textarea('Input');">
+<p>
+
+</p>
+<p>النص بعد التحويل وعكس الحروف: -
+4- <textarea name="Output" id="Output" rows="5" cols="85"></textarea><br>
+<input type="button" value="نسخ" onclick="copy_to_clipboard('Output');">
+<input type="button" value="قص" onclick="cut_to_clipboard('Output');">
+<input type="button" value="اختيار الكل" onclick="select_to_clipboard('Output');">
+<input type="button" value="حذف" onclick="delete_textarea('Output');">
+<input type="button" value="حذف الكل" onclick="delete_textarea('InputD'); delete_textarea('OutInputD');delete_textarea('Output');delete_textarea('Input');delete_textarea('arabicB');delete_textarea('arabic');delete_textarea('InputR');delete_textarea('OutInputR');">
+<pre>
+[<input type="checkbox" name="Numbers" checked="" onclick="reverseIt()">لا تقلب الأرقام] [<input type="checkbox" name="Dashes" checked="" onclick="reverseIt()"> لا تقلب علامات الترقيم("./:-")!] [<input type="checkbox" name="English" checked="" onclick="reverseIt()">لا تقلب الأحرف الإنجليزية]
+[<input type="checkbox" name="Newline"  onclick="reverseIt()"> إستخدم هذا الحرف كمقسم أسطر <input type="text" name="NewlineChars" maxlength="20" value="~">حرف واحد لكل سطر ]
+</pre>
+
+<script language="javascript">
+
+function shuffleLine (theLine, theShuffleChar) {
+	//alert (theLine);
+	//alert (theShuffleChar);
+	theResult="";
+	theShuffleLoc=theLine.indexOf(theShuffleChar);
+	theLineLength=theLine.length;
+	if (theShuffleLoc >= 0) {
+		for (j=theShuffleLoc+1 ; j < theLineLength-1 ; j++) {
+			theResult=theResult + theLine.charAt(j);
+		}
+		// theResult=shuffleLine (theResult, theShuffleChar);  // For recursive flips
+		theResult=theResult + theLine.charAt(theShuffleLoc);
+		for (k=0 ; k < theShuffleLoc ; k++) {
+			theResult=theResult + theLine.charAt(k);
+		}
+		theResult=theResult + theLine.charAt(theLineLength-1);
+		return (theResult);
+	} else {
+		return (theLine);
+	}
+}
+
+function reverseIt () {
+// alert (shuffleLine ("abc~def~ghi","~"));
+// This function reverses a textarea
+// Copyright (C) 2002 Eliram Haklai
+// www.eliram.com
+
+	theLineChars = "\r\n";
+	theStraightChars = "";
+	theFlipChars = this.form1.NewlineChars.value; // Characters that cause reversal of two sides of the line: "abc | def" -> " def|abc "
+	if (this.form1.Numbers.checked)
+		theStraightChars = "0123456789" + theStraightChars;
+	if (this.form1.Dashes.checked)
+		theStraightChars = "\/:-&;_~,-=+*'^%$#@\"" + theStraightChars;
+	if (this.form1.English.checked)
+		theStraightChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" + theStraightChars;
+	if (this.form1.Newline.checked)
+		theShuffleChar = this.form1.NewlineChars.value;
+	theString=this.form1.Input.value + "\r\n";
+	theReverse="";
+	theReverseArea="";
+	theStraightBuffer="";
+	theLength=theString.length;
+	for (i=0 ; i<theLength ; i++) {
+		if (theLineChars.indexOf(theString.charAt(i)) >= 0) {                         // EOL
+			if (theStraightBuffer != "") {
+				theReverse=theStraightBuffer + theReverse;
+				theStraightBuffer="";
+			}
+			if (theString.charAt(i) == "\n") {
+				if (this.form1.Newline.checked) {
+				//	alert (theReverse);
+					theReverse=shuffleLine(theReverse, theShuffleChar);
+				} else {
+					theReverse=shuffleLine(theReverse, "\n");
+				}
+			}
+			theReverse=theReverse + theString.charAt(i);
+		} else {
+			if (theStraightChars.indexOf(theString.charAt(i)) >= 0) {
+				theStraightBuffer=theStraightBuffer + theString.charAt(i);
+			} else {
+				if (theStraightBuffer != "") {
+					theReverse=theStraightBuffer + theReverse;
+					theStraightBuffer="";
+				}
+				
+			
+				if (theString.charAt(i)==")"&& this.form1.Dashes.checked)
+				{
+				theReverse="("+ theReverse;
+				}else if (theString.charAt(i)=="("&& this.form1.Dashes.checked)
+				{
+				theReverse=")"+ theReverse;
+				}
+				else if (theString.charAt(i)=="{"&& this.form1.Dashes.checked)
+				{
+				theReverse="}"+ theReverse;
+				}else if (theString.charAt(i)=="}"&& this.form1.Dashes.checked)
+				{
+				theReverse="{"+ theReverse;
+				}else if (theString.charAt(i)=="["&& this.form1.Dashes.checked)
+				{
+				theReverse="]"+ theReverse;
+				}else if (theString.charAt(i)=="]"&& this.form1.Dashes.checked)
+				{
+				theReverse="["+ theReverse;
+				}else if (theString.charAt(i)==">"&& this.form1.Dashes.checked)
+				{
+				theReverse="<"+ theReverse;
+				}else if (theString.charAt(i)=="<"&& this.form1.Dashes.checked)
+				{
+				theReverse=">"+ theReverse;
+				}
+				else {
+				
+				theReverse=theString.charAt(i) + theReverse;
+			}
+			}
+		}
+		if (theString.charAt(i) == "\n") {
+			theReverseArea=theReverseArea + theReverse;
+			theReverse="";
+		}
+	}
+	if (theStraightBuffer != "") {
+		theReverse=theStraightBuffer + theReverse;
+		theStraightBuffer="";
+	}
+	theReverseArea=theReverseArea + theReverse;
+	this.form1.Output.value=theReverseArea;
+}
+</script>
+</body>
+</html>
